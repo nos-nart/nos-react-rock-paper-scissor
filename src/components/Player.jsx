@@ -5,6 +5,7 @@ import rock from '../assets/images/rockhand.svg';
 import paper from '../assets/images/paperhand.svg';
 import scissor from '../assets/images/scissorhand.svg';
 import { motion } from 'framer-motion';
+import { useInterval } from '../hooks/useInterval'; 
 
 const PICK = {
   ROCK: 'rock',
@@ -13,10 +14,18 @@ const PICK = {
 }
 
 export const Player = () => {
-  const playerPick = useSelector(state => state.game.playerPick);
+  const [timeRemaining, setTimeRemaining] = React.useState(5);
+  const {playerPick, started} = useSelector(state => state.game);
+
+  useInterval(() => {
+    setTimeRemaining((timeRemaining) => timeRemaining - 1);
+  }, started ? 1000 : null)
 
   return (
     <div className="flex flex-col items-center">
+      {started
+        ? <p className="text-center">{timeRemaining > 0 ? timeRemaining : 0}</p>
+        : <p className="text-center">are you ready!</p>}
       <div className="w-60">
        {playerPick === PICK.ROCK && <img src={rock} alt="user-hand"/>}
        {playerPick === PICK.PAPER && <img src={paper} alt="user-hand"/>}

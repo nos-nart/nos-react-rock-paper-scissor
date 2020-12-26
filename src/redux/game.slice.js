@@ -15,7 +15,8 @@ export const gameSlice = createSlice({
   name: 'game',
   initialState: {
     // expenses: [],
-    score: 0,
+    playerScore: 0,
+    computerScore: 0,
     playerPick: 'rock',
     computerPick: '',
     started: false,
@@ -31,7 +32,20 @@ export const gameSlice = createSlice({
     startGame: (state, action) => {
       return {
         ...state,
-        computerPick: COMPUTER.THINKING
+        computerPick: COMPUTER.THINKING,
+        started: true
+      }
+    },
+    stopGame: (state, action) => {
+      return {
+        ...state,
+        started: false
+      }
+    },
+    userPicked: (state, action) => {
+      const { userPick } = action;
+      return {
+        ...state,
       }
     }
   }
