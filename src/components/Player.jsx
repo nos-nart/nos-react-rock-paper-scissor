@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import rock from '../assets/images/rockhand.svg';
 import paper from '../assets/images/paperhand.svg';
 import scissor from '../assets/images/scissorhand.svg';
+import ghost from '../assets/images/giphy.gif';
 import { motion } from 'framer-motion';
 import { useInterval } from '../hooks/useInterval'; 
+import { GameActions } from '../redux/game.slice';
 
 const PICK = {
   ROCK: 'rock',
@@ -13,49 +15,53 @@ const PICK = {
   SCISSOR: 'scissor'
 }
 
-export const Player = () => {
-  const [timeRemaining, setTimeRemaining] = React.useState(5);
-  const {playerPick, started} = useSelector(state => state.game);
+const OPTIONS = [
+  {
+    image: rock,
+    name: PICK.ROCK,
+    alt: 'rock-hand'
+  },
+  {
+    image: paper,
+    name: PICK.PAPER,
+    alt: 'paper-hand',
+  },
+  {
+    image: scissor,
+    name: PICK.SCISSOR,
+    alt: 'scissor-hand'
+  }
+]
 
-  useInterval(() => {
-    setTimeRemaining((timeRemaining) => timeRemaining - 1);
-  }, started ? 1000 : null)
+export const Player = () => {
+  const dispatch = useDispatch();
+  const {playerPick} = useSelector(state => state.game);
+
+  const handleUserPick = (item) => {
+    dispatch(GameActions.onPlayerPick({ picked: item.name }));
+  }
 
   return (
     <div className="flex flex-col items-center">
-      {started
-        ? <p className="text-center">{timeRemaining > 0 ? timeRemaining : 0}</p>
-        : <p className="text-center">are you ready!</p>}
-      <div className="w-60">
-       {playerPick === PICK.ROCK && <img src={rock} alt="user-hand"/>}
-       {playerPick === PICK.PAPER && <img src={paper} alt="user-hand"/>}
-       {playerPick === PICK.SCISSOR && <img src={scissor} alt="user-hand"/>}
+      <div className="w-60 h-60 flex justify-center">
+        {playerPick === '' && <img class="w-40 h-40" src={ghost} alt="empty" /> }
+        {playerPick === PICK.ROCK && <img src={rock} alt="rock-hand"/>}
+        {playerPick === PICK.PAPER && <img src={paper} alt="paper-hand"/>}
+        {playerPick === PICK.SCISSOR && <img src={scissor} alt="scissor-hand"/>}
       </div>
       <div className="grid grid-cols-3 gap-4 mt-6">
-        <motion.button
-          whileHover={{
-            scale: 1.1,
-          }}
-          className={`${styles.playerOptions} ${playerPick === PICK.ROCK ? styles.active : ''}`}
-          type="button">
-          <img src={rock} alt="user-hand"/>
-        </motion.button>
-        <motion.button
-          whileHover={{
-            scale: 1.1,
-          }}
-          className={`${styles.playerOptions} ${playerPick === PICK.PAPER ? styles.active : ''}`}
-          type="button">
-          <img src={paper} alt="user-hand"/>
-        </motion.button>
-        <motion.button
-          whileHover={{
-            scale: 1.1,
-          }}
-          className={`${styles.playerOptions} ${playerPick === PICK.SCISSOR ? styles.active : ''}`}
-          type="button">
-          <img src={scissor} alt="user-hand"/>
-        </motion.button>
+        {OPTIONS.map((o, index) => (
+          <motion.button
+            key={index}
+            whileHover={{
+              scale: 1.1,
+            }}
+            className={`${styles.playerOptions} ${playerPick === o.name ? styles.active : ''}`}
+            onClick={() => handleUserPick(o)}
+            type="button">
+            <img src={o.image} alt={o.alt} />
+          </motion.button>
+        ))}
       </div>
     </div>
   )

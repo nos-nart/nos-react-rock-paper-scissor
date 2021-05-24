@@ -17,18 +17,11 @@ export const gameSlice = createSlice({
     // expenses: [],
     playerScore: 0,
     computerScore: 0,
-    playerPick: 'rock',
+    playerPick: '',
     computerPick: '',
-    started: false,
     message: 'Hello folks!',
   },
   reducers: {
-    // example: (state, action) => {
-    //   return {
-    //     ...state,
-    //     expenses: [...action.payload]
-    //   };
-    // },
     startGame: (state, action) => {
       return {
         ...state,
@@ -36,17 +29,9 @@ export const gameSlice = createSlice({
         started: true
       }
     },
-    stopGame: (state, action) => {
-      return {
-        ...state,
-        started: false
-      }
-    },
-    userPicked: (state, action) => {
-      const { userPick } = action;
-      return {
-        ...state,
-      }
+    onPlayerPick: (state, action) => {
+      const { picked } = action.payload;
+      return { ...state, playerPick: picked };
     }
   }
 });
