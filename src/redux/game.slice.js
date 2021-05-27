@@ -32,7 +32,7 @@ const checkWin = (user, computer) => {
     if (computer === COMPUTER.PICK.SCISSOR) {
       player_score += 1;
       winner = 'You win!';
-    } else if (computer_score === COMPUTER.PICK.PAPER) {
+    } else if (computer === COMPUTER.PICK.PAPER) {
       computer_score += 1;
       winner = 'You lose!';
     }
@@ -41,7 +41,7 @@ const checkWin = (user, computer) => {
     if (computer === COMPUTER.PICK.ROCK) {
       player_score += 1;
       winner = 'You win!';
-    } else if (computer_score === COMPUTER.PICK.SCISSOR) {
+    } else if (computer === COMPUTER.PICK.SCISSOR) {
       computer_score += 1;
       winner = 'You lose!';
     }
@@ -50,7 +50,7 @@ const checkWin = (user, computer) => {
     if (computer === COMPUTER.PICK.PAPER) {
       player_score += 1;
       winner = 'You win!';
-    } else if (computer_score === COMPUTER.PICK.ROCK) {
+    } else if (computer === COMPUTER.PICK.ROCK) {
       computer_score += 1;
       winner = 'You lose!';
     }
